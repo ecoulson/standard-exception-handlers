@@ -39,7 +39,9 @@ describe('Exception Handling Service Validations Test Suite', () => {
         });
 
         test('Should throw a validation exception when a null pattern is provided', () => {
-            const inputFunction = () => {};
+            const inputFunction = () => {
+                return;
+            };
             const nullException = new NullExceptionPatternList();
             const inputPatterns = null as any;
             const defaultAction = () => new Exception();
@@ -59,7 +61,9 @@ describe('Exception Handling Service Validations Test Suite', () => {
         });
 
         test('Should throw a validation exception when a null action is provided to handle', () => {
-            const inputFunction = () => {};
+            const inputFunction = () => {
+                return;
+            };
             const nullException = new NullExceptionActionException();
             const defaultAction = null as any;
             const expectedException = new ExceptionHandlingValidationException(
@@ -76,7 +80,9 @@ describe('Exception Handling Service Validations Test Suite', () => {
         });
 
         test('Should throw a validation exception when a null action is provided to catchAll', () => {
-            const inputFunction = () => {};
+            const inputFunction = () => {
+                return;
+            };
             const nullException = new NullExceptionActionException();
             const defaultAction = null as any;
             const expectedException = new ExceptionHandlingValidationException(
@@ -111,7 +117,7 @@ describe('Exception Handling Service Validations Test Suite', () => {
         });
 
         test('Should throw a validation exception when a null pattern is provided', async () => {
-            const inputFunction = async () => {};
+            const inputFunction = async () => Promise.resolve();
             const nullException = new NullExceptionPatternList();
             const inputPatterns = null as any;
             const defaultAction = () => new Exception();
@@ -131,7 +137,7 @@ describe('Exception Handling Service Validations Test Suite', () => {
         });
 
         test('Should throw a validation exception when a null action is provided', () => {
-            const inputFunction = async () => {};
+            const inputFunction = async () => Promise.resolve();
             const nullException = new NullExceptionActionException();
             const defaultAction = null as any;
             const expectedException = new ExceptionHandlingValidationException(
@@ -148,7 +154,7 @@ describe('Exception Handling Service Validations Test Suite', () => {
         });
 
         test('Should throw a validation exception when a null action is provided to catchAll', () => {
-            const inputFunction = async () => {};
+            const inputFunction = async () => Promise.resolve();
             const nullException = new NullExceptionActionException();
             const defaultAction = null as any;
             const expectedException = new ExceptionHandlingValidationException(

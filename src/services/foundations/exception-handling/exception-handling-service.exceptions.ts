@@ -1,5 +1,4 @@
-import { Exception } from '@the-standard/exceptions';
-import { ExceptionConstructor } from '../../../../exceptions';
+import { Exception, ExceptionConstructor } from '@the-standard/exceptions';
 import { NullExceptionActionException } from '../../../models/exception-handling/exceptions/null-exception-action-exception';
 import { NullExceptionPatternList } from '../../../models/exception-handling/exceptions/null-exception-pattern-list';
 import { NullFunctionException } from '../../../models/exception-handling/exceptions/null-function-exception';

@@ -25,7 +25,9 @@ describe('Exception Handling Service Exceptions Test Suite', () => {
 
     describe('tryCatch', () => {
         test('Should throw a service exception when adding an action throws an exception', () => {
-            const inputFunction = () => {};
+            const inputFunction = () => {
+                return;
+            };
             const innerError = new Error('Failed to add action');
             const innerException = Exception.fromError(innerError);
             const failedException = new FailedExceptionActionStorageException(
@@ -126,7 +128,7 @@ describe('Exception Handling Service Exceptions Test Suite', () => {
 
     describe('tryCatchAsync', () => {
         test('Should throw a service exception when adding an action throws an exception', async () => {
-            const inputFunction = async () => {};
+            const inputFunction = async () => Promise.resolve();
             const innerError = new Exception('Failed to add action');
             const innerException = Exception.fromError(innerError);
             const failedException = new FailedExceptionActionStorageException(
