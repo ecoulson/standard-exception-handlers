@@ -1,26 +1,24 @@
 import { isNil } from '@the-standard/conditions';
-import { AsyncFunction } from '../../../models/exception-handling/async-function';
-import { ErrorConstructor } from '../../../models/exception-handling/error-constructor';
-import { ExceptionAction } from '../../../models/exception-handling/exception-action';
+import { Action, GenericConstructor } from '@the-standard/types';
+import { ExceptionHandler } from '../../../models/exception-handling/exception-handler';
 import { NullExceptionActionException } from '../../../models/exception-handling/exceptions/null-exception-action-exception';
 import { NullExceptionPatternList } from '../../../models/exception-handling/exceptions/null-exception-pattern-list';
 import { NullFunctionException } from '../../../models/exception-handling/exceptions/null-function-exception';
-import { Function } from '../../../models/exception-handling/function';
 
 export class ExceptionHandlingServiceValidations<T> {
-    validateFunction(func: Function<T> | AsyncFunction<T>) {
+    validateFunction(func: Action<T> | Action<Promise<T>>) {
         if (isNil(func)) {
             throw new NullFunctionException();
         }
     }
 
-    validateErrorPatterns(errorPatternList: ErrorConstructor[]) {
+    validateErrorPatterns(errorPatternList: GenericConstructor<Error>[]) {
         if (isNil(errorPatternList)) {
             throw new NullExceptionPatternList();
         }
     }
 
-    validateExceptionAction(action: ExceptionAction) {
+    validateExceptionAction(action: ExceptionHandler) {
         if (isNil(action)) {
             throw new NullExceptionActionException();
         }

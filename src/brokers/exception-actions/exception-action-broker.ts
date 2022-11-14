@@ -1,29 +1,32 @@
-import { ErrorConstructor } from '../../models/exception-handling/error-constructor';
-import { ExceptionAction } from '../../models/exception-handling/exception-action';
+import { GenericConstructor, Nullable } from '@the-standard/types';
+import { ExceptionHandler } from '../../models/exception-handling/exception-handler';
 import { IExceptionActionBroker } from './exception-action-broker.interface';
 
 export class ExceptionActionBroker implements IExceptionActionBroker {
-    private defaultHandler: ExceptionAction | null | undefined;
-    private readonly actionMapping: Map<ErrorConstructor, ExceptionAction>;
+    private defaultHandler: Nullable<ExceptionHandler>;
+    private readonly actionMapping: Map<
+        GenericConstructor<Error>,
+        ExceptionHandler
+    >;
 
     constructor() {
         this.actionMapping = new Map();
         this.defaultHandler = null;
     }
 
-    setDefault(action: ExceptionAction): void {
+    setDefault(action: ExceptionHandler): void {
         this.defaultHandler = action;
     }
 
-    getDefault(): ExceptionAction | null | undefined {
+    getDefault(): Nullable<ExceptionHandler> {
         return this.defaultHandler;
     }
 
-    addAction(pattern: ErrorConstructor, action: ExceptionAction) {
+    addAction(pattern: GenericConstructor<Error>, action: ExceptionHandler) {
         this.actionMapping.set(pattern, action);
     }
 
-    getAction(pattern: ErrorConstructor) {
+    getAction(pattern: GenericConstructor<Error>) {
         return this.actionMapping.get(pattern);
     }
 }

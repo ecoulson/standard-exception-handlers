@@ -1,20 +1,20 @@
-import { Exception, ExceptionConstructor } from '@the-standard/exceptions';
+import { Action, GenericConstructor } from '@the-standard/types';
+import { Exception } from '@the-standard/exceptions';
 import { NullExceptionActionException } from '../../../models/exception-handling/exceptions/null-exception-action-exception';
 import { NullExceptionPatternList } from '../../../models/exception-handling/exceptions/null-exception-pattern-list';
 import { NullFunctionException } from '../../../models/exception-handling/exceptions/null-function-exception';
-import { Function } from '../../../models/exception-handling/function';
 import { ExceptionHandlingServiceException } from './exceptions/exception-handling-service-exception';
 import { ExceptionHandlingValidationException } from './exceptions/exception-handling-validation-exception';
 import { FailedExceptionActionStorageException } from './exceptions/failed-exception-action-storage-exception';
 
 export class ExceptionHandlingServiceExceptions {
-    tryCatch<T>(func: Function<T>) {
+    tryCatch<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
             const exception = Exception.fromError(error);
             const exceptionConstructor =
-                exception.constructor as ExceptionConstructor;
+                exception.constructor as GenericConstructor<Exception>;
             switch (exceptionConstructor) {
                 case NullFunctionException:
                     throw new ExceptionHandlingValidationException(exception);
@@ -31,13 +31,13 @@ export class ExceptionHandlingServiceExceptions {
         throw new ExceptionHandlingServiceException(failedException);
     }
 
-    handleCatch<T>(func: Function<T>) {
+    handleCatch<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
             const exception = Exception.fromError(error);
             const exceptionConstructor =
-                exception.constructor as ExceptionConstructor;
+                exception.constructor as GenericConstructor<Exception>;
             switch (exceptionConstructor) {
                 case NullExceptionPatternList:
                 case NullExceptionActionException:
@@ -48,7 +48,7 @@ export class ExceptionHandlingServiceExceptions {
         }
     }
 
-    wrapExceptions<T>(func: Function<T>) {
+    wrapExceptions<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
@@ -57,13 +57,13 @@ export class ExceptionHandlingServiceExceptions {
         }
     }
 
-    handleDefault<T>(func: Function<T>) {
+    handleDefault<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
             const exception = Exception.fromError(error);
             const exceptionConstructor =
-                exception.constructor as ExceptionConstructor;
+                exception.constructor as GenericConstructor<Exception>;
             switch (exceptionConstructor) {
                 case NullExceptionActionException:
                     throw new ExceptionHandlingValidationException(exception);

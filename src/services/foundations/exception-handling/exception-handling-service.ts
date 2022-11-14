@@ -1,15 +1,13 @@
 import { Exception } from '@the-standard/exceptions';
 import { ExceptionActionBroker } from '../../../brokers/exception-actions/exception-action-broker';
-import { AsyncFunction } from '../../../models/exception-handling/async-function';
-import { ErrorConstructor } from '../../../models/exception-handling/error-constructor';
-import { ExceptionAction } from '../../../models/exception-handling/exception-action';
+import { ExceptionHandler } from '../../../models/exception-handling/exception-handler';
 import { ExceptionHandlingChainActions } from '../../../models/exception-handling/exception-handling-chain-actions';
 import { AsyncExceptionHandlingChainActions } from '../../../models/exception-handling/async-exception-handling-chain-actions';
-import { Function } from '../../../models/exception-handling/function';
 import { ExceptionHandlingServiceExceptions } from './exception-handling-service.exceptions';
 import { IExceptionHandlingService } from './exception-handling-service.interface';
 import { ExceptionHandlingServiceValidations } from './exception-handling-service.validations';
 import { isNil } from '@the-standard/conditions';
+import { Action, GenericConstructor } from '@the-standard/types';
 
 export class ExceptionHandlingService<T>
     implements IExceptionHandlingService<T>
@@ -22,7 +20,7 @@ export class ExceptionHandlingService<T>
         this.validations = new ExceptionHandlingServiceValidations();
     }
 
-    tryCatch(func: Function<T>): ExceptionHandlingChainActions<T> {
+    tryCatch(func: Action<T>): ExceptionHandlingChainActions<T> {
         return this.exceptions.tryCatch(() => {
             this.validations.validateFunction(func);
             return this.createExceptionHandlingChainActions(func);
@@ -30,7 +28,7 @@ export class ExceptionHandlingService<T>
     }
 
     private createExceptionHandlingChainActions(
-        func: Function<T>
+        func: Action<T>
     ): ExceptionHandlingChainActions<T> {
         return new ExceptionHandlingChainActions<T>(
             (exceptionPatterns, action) =>
@@ -41,9 +39,9 @@ export class ExceptionHandlingService<T>
     }
 
     private handleCatch(
-        exceptionPatternList: ErrorConstructor[],
-        action: ExceptionAction,
-        func: Function<T>
+        exceptionPatternList: GenericConstructor<Error>[],
+        action: ExceptionHandler,
+        func: Action<T>
     ): ExceptionHandlingChainActions<T> {
         return this.exceptions.handleCatch(() => {
             this.addExceptionPatterns(exceptionPatternList, action);
@@ -52,8 +50,8 @@ export class ExceptionHandlingService<T>
     }
 
     private addExceptionPatterns(
-        exceptionPatternList: ErrorConstructor[],
-        exceptionAction: ExceptionAction
+        exceptionPatternList: GenericConstructor<Error>[],
+        exceptionAction: ExceptionHandler
     ) {
         this.validations.validateErrorPatterns(exceptionPatternList);
         this.validations.validateExceptionAction(exceptionAction);
@@ -62,7 +60,7 @@ export class ExceptionHandlingService<T>
         });
     }
 
-    private execute(func: Function<T>) {
+    private execute(func: Action<T>) {
         try {
             return func();
         } catch (error) {
@@ -98,7 +96,7 @@ export class ExceptionHandlingService<T>
         });
     }
 
-    private handleDefault(action: ExceptionAction, func: Function<T>) {
+    private handleDefault(action: ExceptionHandler, func: Action<T>) {
         return this.exceptions.handleDefault(() => {
             this.validations.validateExceptionAction(action);
             this.broker.setDefault(action);
@@ -107,7 +105,7 @@ export class ExceptionHandlingService<T>
     }
 
     tryCatchAsync(
-        func: AsyncFunction<T>
+        func: Action<Promise<T>>
     ): AsyncExceptionHandlingChainActions<T> {
         return this.exceptions.tryCatch(() => {
             this.validations.validateFunction(func);
@@ -116,7 +114,7 @@ export class ExceptionHandlingService<T>
     }
 
     private createAsyncExceptionHandlingChainActions(
-        func: AsyncFunction<T>
+        func: Action<Promise<T>>
     ): AsyncExceptionHandlingChainActions<T> {
         return new AsyncExceptionHandlingChainActions<T>(
             (exceptionPatterns, action) =>
@@ -127,9 +125,9 @@ export class ExceptionHandlingService<T>
     }
 
     private handleAsyncCatch(
-        exceptionPatternList: ErrorConstructor[],
-        action: ExceptionAction,
-        func: AsyncFunction<T>
+        exceptionPatternList: GenericConstructor<Error>[],
+        action: ExceptionHandler,
+        func: Action<Promise<T>>
     ): AsyncExceptionHandlingChainActions<T> {
         return this.exceptions.handleCatch(() => {
             this.addExceptionPatterns(exceptionPatternList, action);
@@ -137,7 +135,7 @@ export class ExceptionHandlingService<T>
         });
     }
 
-    private async asyncExecute(func: AsyncFunction<T>): Promise<T> {
+    private async asyncExecute(func: Action<Promise<T>>): Promise<T> {
         try {
             return await func();
         } catch (error) {
@@ -146,8 +144,8 @@ export class ExceptionHandlingService<T>
     }
 
     private handleAsyncDefault(
-        action: ExceptionAction,
-        func: AsyncFunction<T>
+        action: ExceptionHandler,
+        func: Action<Promise<T>>
     ): AsyncExceptionHandlingChainActions<T> {
         return this.exceptions.handleDefault(() => {
             this.validations.validateExceptionAction(action);

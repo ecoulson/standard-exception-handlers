@@ -1,12 +1,11 @@
-import { AsyncFunction } from '../../../models/exception-handling/async-function';
+import { Action } from '@the-standard/types';
 import { ExceptionHandlingChainActions } from '../../../models/exception-handling/exception-handling-chain-actions';
 import { AsyncExceptionHandlingChainActions } from '../../../models/exception-handling/async-exception-handling-chain-actions';
-import { Function } from '../../../models/exception-handling/function';
 
 export interface IExceptionHandlingService<T> {
-    tryCatch(func: Function<T>): ExceptionHandlingChainActions<T>;
+    tryCatch(func: Action<T>): ExceptionHandlingChainActions<T>;
 
     tryCatchAsync(
-        func: AsyncFunction<T>
+        func: Action<Promise<T>>
     ): AsyncExceptionHandlingChainActions<T>;
 }

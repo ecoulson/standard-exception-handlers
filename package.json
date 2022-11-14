@@ -47,6 +47,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@the-standard/exceptions": "^1.0.4"
+    "@the-standard/exceptions": "^1.0.4",
+    "@the-standard/types": "^1.0.0"
   }
 }

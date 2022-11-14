@@ -1,9 +1,14 @@
-import { ErrorConstructor } from '../../models/exception-handling/error-constructor';
-import { ExceptionAction } from '../../models/exception-handling/exception-action';
+import { GenericConstructor } from '@the-standard/types';
+import { ExceptionHandler } from '../../models/exception-handling/exception-handler';
 
 export interface IExceptionActionBroker {
-    addAction(pattern: ErrorConstructor, action: ExceptionAction): void;
-    getAction(pattern: ErrorConstructor): ExceptionAction | undefined | null;
-    setDefault(action: ExceptionAction): void;
-    getDefault(): ExceptionAction | undefined | null;
+    addAction(
+        pattern: GenericConstructor<Error>,
+        action: ExceptionHandler
+    ): void;
+    getAction(
+        pattern: GenericConstructor<Error>
+    ): ExceptionHandler | undefined | null;
+    setDefault(action: ExceptionHandler): void;
+    getDefault(): ExceptionHandler | undefined | null;
 }
