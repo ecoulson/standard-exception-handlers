@@ -1,4 +1,4 @@
-import {Action} from "@the-standard/types"
+import { Action } from '@the-standard/types';
 import { CatchHandler } from './catch-handler';
 import { DefaultHandler } from './default-handler';
 
