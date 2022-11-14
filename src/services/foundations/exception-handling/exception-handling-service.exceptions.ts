@@ -8,7 +8,7 @@ import { ExceptionHandlingValidationException } from './exceptions/exception-han
 import { FailedExceptionActionStorageException } from './exceptions/failed-exception-action-storage-exception';
 
 export class ExceptionHandlingServiceExceptions {
-    tryCatch<T>(func: Action<T>) {
+    protected tryCatchExceptionHandler<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
@@ -31,7 +31,7 @@ export class ExceptionHandlingServiceExceptions {
         throw new ExceptionHandlingServiceException(failedException);
     }
 
-    handleCatch<T>(func: Action<T>) {
+    protected handleCatchExceptionHandler<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
@@ -48,7 +48,7 @@ export class ExceptionHandlingServiceExceptions {
         }
     }
 
-    wrapExceptions<T>(func: Action<T>) {
+    protected wrapExceptionsExceptionHandler<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
@@ -57,7 +57,7 @@ export class ExceptionHandlingServiceExceptions {
         }
     }
 
-    handleDefault<T>(func: Action<T>) {
+    protected handleDefaultExceptionHandler<T>(func: Action<T>) {
         try {
             return func();
         } catch (error) {
