@@ -1,6 +1,6 @@
 {
   "name": "@the-standard/exception-handlers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Fluent exception handling with pattern matching in node",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
